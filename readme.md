@@ -28,14 +28,14 @@ An event sender is used to send events to multiple call-backs immediately.
 
 To create an event sender, you create an object of the class ``EventSender<T>``, where T is the signature of your call-backs. The syntax is the same as ``std::function<T>``. The ``EventSender<T>`` class is defined in ``"EventSender.h"``.
 
-#### Example
+#### Example:
 
 ```
 // Create a sender object that sends an int
 EventSender<void (int)> sender;
 ```
 
-#### Note
+#### NOTE:
 
 ---
 It is reccomended to have a return value that is void, as returning a value with multiple call-backs does not make much sense.
@@ -48,7 +48,7 @@ To subcsribe/un-subscribe to events that will be emitted/sent, you simply call `
 
 To use add/remove with a global function, you simply pass the address of the function to add/remove.
 
-#### Example
+#### Example:
 
 ```
 void doSomething(int x)
@@ -70,7 +70,7 @@ sender.remove(&doSomething);
 
 To use add/remove with a member-function, you must first pass a pointer to the object you wish to bind the event to and then the member-function.
 
-#### Example
+#### Example:
 
 ```
 struct ExampleClass
@@ -134,7 +134,7 @@ struct CollisionEvent
 };
 ```
 
-#### Note:
+#### NOTE:
 
 ----
 Feel free to make the data non-const, especially if you need to modify sent data.
@@ -173,7 +173,8 @@ collisionEventQueue.remove(&handleCollision);
 
 ```
 
-#### Note:
+#### NOTE:
+
 ---
 
 EventQueue actually uses an EventSender object to send out events. The only difference is, an ``EventQueue<T>`` uses the following function prototype:
