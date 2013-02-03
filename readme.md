@@ -43,8 +43,10 @@ As you can see, this library is quite fast compared to regular function calls.
 
 #### NOTE:
 
+---
 This is using just one call-back for the events.
 
+---
 
 # Usage
 
