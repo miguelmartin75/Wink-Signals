@@ -2,7 +2,7 @@
 
 ---
 
-A fast template event system for C++, using the Fastest Possible C++ Delegates. This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe.
+A fast template event system for C++, using the Fastest Possible C++ Delegates. This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe. This library uses some C++11 features, so it may or may not compile with your compiler.
 
 # Author
 
@@ -10,11 +10,41 @@ A fast template event system for C++, using the Fastest Possible C++ Delegates. 
 
 Miguel Martin - [miguel.martin7.5@hotmail.com](mailto:miguel.martin7.5@hotmail.com)
 
+# Tested Compilers
+
+---
+
+- clang 3.1/Apple Clang Version 4.1 (LLVM 3.1svn)
+
 # Installation
 
 ---
 
 This library is a header-only library (mainly because of templates), therefore there is no installation. Just place it in your project, or somewhere your compiler can find it and you're all set!
+
+# Performance
+
+This library is FAST, it uses the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library in order to achieve this performance. You can read about the performance of that library on [this](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) website.
+
+In order to test out the performance yourself, you can compile and run the ``Benchmark.cpp`` file in the ``examples/`` directory.
+
+Here's the EventSender and EventQueue performance compared to regular function calls:
+
+	BENCH MARK TO SEND 100000000 EVENTS
+
+	Using regular function calls to handle events:
+	Took: 6.11206 seconds
+	Using EventSender<void(int)> to handle events:
+	Took: 6.20876 seconds
+	Using EventQueue<int> to handle events:
+	Took: 8.82542 seconds
+
+As you can see, this library is quite fast compared to regular function calls.
+
+#### NOTE:
+
+This is using just one call-back for the events.
+
 
 # Usage
 
