@@ -31,18 +31,18 @@
 
 #include <vector>
 
-#include "FastDelegate.h"
+#include "impl/FastDelegate.h"
 
 /// It is reccomended for events to
 /// not return anything
 template <class Fn>
 class EventSender
 {
-	/// An event delegate, which is used to
-	typedef fastdelegate::FastDelegate<Fn> EventDelegate;
+	/// The implementation of a delegate (call-back)
+	typedef fastdelegate::FastDelegate<Fn> ImplEventDelegate;
 	
 	/// Defines an array of call-backs
-	typedef std::vector<EventDelegate> EventDelegateArray;
+	typedef std::vector<ImplEventDelegate> EventDelegateArray;
 	
 public:
 	
@@ -53,7 +53,7 @@ public:
 	/// \param ptr The listener you wish to add
 	void add(StaticFnPtr fn)
 	{
-		_delegates.push_back(EventDelegate(fn));
+		_delegates.push_back(ImplEventDelegate(fn));
 	}
 	
 	/// Adds a call-back to a member function pointer
@@ -62,14 +62,14 @@ public:
 	template <typename T, class MemFnPtr>
 	void add(T* obj, MemFnPtr ptr)
 	{
-		_delegates.push_back(EventDelegate(obj, ptr));
+		_delegates.push_back(ImplEventDelegate(obj, ptr));
 	}
 	
 	/// Removes a call-back to a static function pointer
 	/// \param ptr The function pointer you wish to remove
 	void remove(StaticFnPtr fn)
 	{
-		EventDelegate tester(fn);
+		ImplEventDelegate tester(fn);
 		_delegates.erase(std::find(_delegates.begin(), _delegates.end(), tester));
 	}
 	
@@ -79,7 +79,7 @@ public:
 	template <typename T, class MemFnPtr>
 	void remove(T* obj, MemFnPtr ptr)
 	{
-		EventDelegate tester(obj, ptr);
+		ImplEventDelegate tester(obj, ptr);
 		_delegates.erase(std::find(_delegates.begin(), _delegates.end(), tester));
 	}
 	
@@ -95,6 +95,7 @@ public:
 	
 private:
 	
+	/// The delegates (call-backs) attached to the sender
 	EventDelegateArray _delegates;
 };
 
