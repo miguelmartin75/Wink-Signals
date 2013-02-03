@@ -1,10 +1,24 @@
 # FastTEvent
-This library is designed to be a fast and easy way to handle your events.
+
+---
+
+A fast template event system for C++, using the Fastest Possible C++ Delegates. This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe.
 
 # Author
+
+---
+
 Miguel Martin - [miguel.martin7.5@hotmail.com](mailto:miguel.martin7.5@hotmail.com)
 
+# Installation
+
+---
+
+This library is a header-only library (mainly because of templates), therefore there is no installation. Just place it in your project, or somewhere your compiler can find it and you're all set!
+
 # Usage
+
+---
 
 ## Event Senders
 
@@ -12,7 +26,7 @@ An event sender is used to send events to multiple call-backs immediately.
 
 ### 1. Create an Event Sender Object
 
-To create an event sender, you create an object of the class ``EventSender<T>``, where T is the signature of your call-backs. The syntax is the same as ``std::function<T>``.
+To create an event sender, you create an object of the class ``EventSender<T>``, where T is the signature of your call-backs. The syntax is the same as ``std::function<T>``. The ``EventSender<T>`` class is defined in ``"EventSender.h"``.
 
 #### Example
 
