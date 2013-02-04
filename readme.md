@@ -1,8 +1,10 @@
-# FastTEvent
+# Wink Signals
 
 ---
 
-A fast template event system for C++, using the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible). This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe. This library uses some C++11 features, so it may or may not compile with your compiler.
+A fast template signal library, for C++, using the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible). This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe. This library uses some C++11 features, so it may or may not compile with your compiler. Since it is designed to be easy-to-use, it is quite similar to the famous [boost::signals](http://www.boost.org/doc/libs/1_52_0/doc/html/signals.html) library, but it has it's differences here and there.
+
+Please read the tutorial further down if you wish to use the library.
 
 # Author
 
@@ -34,9 +36,9 @@ Here's the EventSender and EventQueue performance compared to regular function c
 
 	Using regular function calls to handle events:
 	Took: 6.11206 seconds
-	Using EventSender<void(int)> to handle events:
+	Using signal<slot<void(int)> > to handle events:
 	Took: 6.20876 seconds
-	Using EventQueue<int> to handle events:
+	Using event_queue<int> to handle events:
 	Took: 8.82542 seconds
 
 As you can see, this library is quite fast compared to regular function calls.
@@ -52,19 +54,73 @@ This is using just one call-back for the events.
 
 ---
 
-## Event Senders
+The library is contained within the wink/ directory and is within the ``wink`` namespace.
 
-An event sender is used to send events to multiple call-backs immediately. 
+## Slots
 
-### 1. Create an Event Sender Object
+Slots are an alternate way of defining a function pointer. They are almost as fast as a normal function call, since they use [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library. 
 
-To create an event sender, you create an object of the class ``EventSender<T>``, where T is the signature of your call-backs. The syntax is the same as ``std::function<T>``. The ``EventSender<T>`` class is defined in ``"EventSender.h"``.
+### 1. Create a slot
+
+In order to create a slot, you simply ``#include "wink/slot.h"`` and then create an object of type ``wink::slot<T>``, where T is the function prototype. This syntax is the same as ``std::function<T>``, or ``boost::signal<T>``.
 
 #### Example:
 
 ```
-// Create a sender object that sends an int
-EventSender<void (int)> sender;
+wink::slot<void (int)> mySlot;
+```
+
+
+### 2. Binding to functions and member functions
+
+In order to bind to a member function or regular function, you must call the static function ``slot<T>::bind()``, or alternatively pass in the member function or function when constructing your slot.
+
+#### Example:
+
+```
+// Through the constructor
+Foo bar;
+wink::slot<void (int)> slotMemberFn(&bar, &Foo::foobar);
+slot slotGlobalFn(&foo);
+
+// With the use of slot<T>::bind
+
+typedef wink::slot<void (int)> slot;
+Foo bar;
+slot slotMemberFn = slot::bind(&bar, &Foo::foobar);
+slot slotGlobalFn = slot::bind(&foo);
+```
+
+### 3. Calling the slot
+
+To call the slot, simply use the ``operator()``, as you would with a regular function/method. This can take any number of arguments
+
+```
+wink::slot<void (int, int, int)> slot(&foo);
+
+slot(3, 4, 5); // call the slot
+```
+
+#### NOTE:
+
+---
+If binding to an object, when the object is destroyed, it is undefined behaviour. The slot may actually still call the object's method, or it may do something else. I reccomend, if you can, to not call the slot if you destroy an object.
+
+---
+
+## Signals
+
+An event sender is used to send events to multiple call-backs immediately. 
+
+### 1. Create a signal
+
+To create a signal, you create an object of the class ``wink::signal<T>``, where T is a slot.
+
+#### Example:
+
+```
+// Create a signal that uses slots with a function prototype of void (int)
+wink::signal<wink::slot<void (int)> > signal;
 ```
 
 #### NOTE:
@@ -74,11 +130,9 @@ It is reccomended to have a return value that is void, as returning a value with
 
 ---
 
-### 2. Subcsribing/Un-subcsribing to Events
+### 2. Connecting/dis-connecting slots
 
-To subcsribe/un-subscribe to events that will be emitted/sent, you simply call ``add()`` to subscribe and ``remove()`` to un-subscribe. The ``add()`` and ``remove()`` functions work for both member-functions and global functions, since it is overloaded.
-
-To use add/remove with a global function, you simply pass the address of the function to add/remove.
+To connect, or disconnect slot, you simply call ``connect(const slot_type&)`` and ``disconnect(const slot_type&)``, respectively.
 
 #### Example:
 
@@ -90,45 +144,20 @@ void doSomething(int x)
 
 // ...
 
-// Create a sender
-EventSender<void (int)> sender;
+// Create a signal
+typedef wink::slot<void (int)> slot;
+wink::signal<slot> sender;
 
-// subcsribe
-sender.add(&doSomething);
+// connect
+sender.connect(slot::bind(&doSomething));
 
-// un-subscribe
-sender.remove(&doSomething);
+// dis-connect
+sender.disconnect(slot::bind(&doSomething));
 ```
 
-To use add/remove with a member-function, you must first pass a pointer to the object you wish to bind the event to and then the member-function.
+### 3. Emiiting the slots in your signal
 
-#### Example:
-
-```
-struct ExampleClass
-{
-	void doSomething(int x)
-	{
-		std::cout << x << '\n';
-	}
-};
-
-// ... 
-
-// create our object that will subscribe to events
-ExampleClass obj;
-
-// create a sender
-EventSender<void (int)> sender;
-
-// subscribe
-sender.add(&obj, &ExampleClass::doSomething);
-
-// un-subscribe
-sender.remove(&obj, &ExampleClass::doSomething);
-```
-
-### 3. Emitting events
+// TODO: The rest of the tutorial
 
 To emit events to your subcribers (call-backs), you simply call the ``emit(T...)`` function. Where ``T...`` is the paramters of your events.
 
