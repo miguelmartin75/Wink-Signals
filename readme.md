@@ -2,7 +2,7 @@
 
 ---
 
-A fast template signal library, for C++, using the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible). This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe. This library uses some C++11 features, so it may or may not compile with your compiler. Since it is designed to be easy-to-use, it is quite similar to the famous [boost::signals](http://www.boost.org/doc/libs/1_52_0/doc/html/signals.html) library, but it has it's differences here and there.
+A fast template signal library, for C++, using the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible). This library is designed to be fast and easy to use. It is incredibly lightweight and type-safe. This library uses some C++11 features, so it may or may not compile with your compiler. Since it is designed to be easy-to-use, it is quite similar to the famous [boost::signals](http://www.boost.org/doc/libs/1_53_0/doc/html/signals.html) library, but it has it's differences here and there.
 
 Please read the tutorial further down if you wish to use the library.
 
