@@ -33,9 +33,6 @@
 
 namespace wink
 {
-	template <typename Signature>
-	struct signal;
-	
 	/// \brief Describes a slot that may be added to a signal, or used stand-alone for a call-back
 	///
 	/// This can be used as an alternative to std::function, as it is much faster.
@@ -46,15 +43,17 @@ namespace wink
 	{
 	private:
 		
-		friend class signal<Signature>;
 		typedef slot<Signature> __this_type;
 		
 	public:
 		
+		/// A static function pointer with the correct signature
+		typedef Signature FnPtr;
+		
 		/// Binds a function
 		/// \param fn The function you wish to bind
 		/// \note This function must be either marked as static, or not inside a class/struct (i.e. in global scope)
-		static slot<Signature> bind(typename slot<Signature>::FnPtr fn)
+		static slot<Signature> bind(Signature fn)
 		{
 			return slot_type(fn);
 		}
@@ -64,11 +63,8 @@ namespace wink
 		template <typename T, typename MemFnPtr>
 		static slot<Signature> bind(T* obj, MemFnPtr fn)
 		{
-			return slot_type(obj, fn);
+			return __this_type(obj, fn);
 		}
-		
-		/// A static function pointer with the correct signature
-		typedef Signature FnPtr;
 		
 		/// Construct a slot with no call-back
 		slot()

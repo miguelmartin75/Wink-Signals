@@ -49,7 +49,7 @@ namespace wink
 	{
 	private:
 		
-		typedef std::queue<EventData> __event_queue;
+		typedef std::vector<EventData> __event_queue;
 		typedef event_queue<EventData> __this_type;
 		
 	public:
@@ -59,6 +59,8 @@ namespace wink
 		
 		/// The signal_type that is used, for implementation details.
 		typedef signal<slot_type> signal_type;
+		
+		typedef std::vector<EventData> event_data_array;
 		
 		// Queue-specific typedefs
 		typedef typename __event_queue::reference reference;
@@ -140,18 +142,23 @@ namespace wink
 		/// \note
 		/// This is useful if you wish to not copy any data.
 		void push(EventData&& data)
-		{ _event_data_queue.emplace(data); }
+		{ _event_data_queue.push_back(data); }
 		
-		/// Pushes data to the event queue
+		/// Pushes an initializer list of data to the event queue
+		/// \param data The data you wish to push
+		void push(std::initializer_list<EventData>&& data)
+		{ _event_data_queue.insert(_event_data_queue.end(), data.begin(), data.end());}
+		
+		/// Pushses an array of data to the event queue
+		/// \param array The data you wish to add to the event queue
+		void push(const event_data_array& array)
+		{ _event_data_queue.insert(_event_data_queue.end(), array.begin(), array.end()); }
+		
+		/// Emplaces data to the event queue
 		/// \param args The data you wish to add to the event queue
 		template <typename ...Args>
-		void push(Args&&... args)
-		{ _event_data_queue.emplace(args...);}
-		
-		/// Appends a list of data to the event queue
-		/// \param data The data you wish to push
-		void append(std::initializer_list<EventData>&& data)
-		{ _event_data_queue.insert(_event_data_queue.end(), data.begin(), data.end());}
+		void emplace(Args&&... args)
+		{ _event_data_queue.emplace_back(args...);}
 		
 		/// Reserves space in the event queue
 		/// \note

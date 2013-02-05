@@ -158,9 +158,9 @@ int main(int argc, char* argv[])
 	{
 		typedef wink::slot<void (int)> slot;
 		typedef wink::signal<slot> signal;
+		EventHandler handler;
 		signal sender;
 		
-		EventHandler handler;
 		sender.connect(slot::bind(&handler, &EventHandler::handleEvent));
 		
 		std::cout << "Using signal<slot<void(int)>> to handle events:\n";
@@ -202,7 +202,12 @@ int main(int argc, char* argv[])
 #endif // DO_PROPER_BENCHMARK
 		
 		sender.reserve(numbersToSend.size()); // reserve some space
-											  // push data
+		
+		//sender.push({ 1, 2, 3});
+		sender.push(numbersToSend);
+		std::cout << numbersToSend.size() << '\n';
+		
+		// push data
 		for(std::vector<int>::iterator i = numbersToSend.begin(); i != numbersToSend.end(); ++i)
 		{
 			sender.push(int(*i));
