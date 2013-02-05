@@ -58,7 +58,7 @@ The library is contained within the wink/ directory and is within the ``wink`` n
 
 ## Slots
 
-Slots are an alternate way of defining a function pointer. They are almost as fast as a normal function call, since they use [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library. 
+Slots are an alternate way of defining a function pointer. They are almost as fast as a normal function call, since they use the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library, for their implementation.
 
 ### 1. Create a slot
 
@@ -130,9 +130,9 @@ It is reccomended to have a return value that is void, as returning a value with
 
 ---
 
-### 2. Connecting/dis-connecting slots
+### 2. Connecting/Disconnecting slots
 
-To connect, or disconnect slot, you simply call ``connect(const slot_type&)`` and ``disconnect(const slot_type&)``, respectively.
+To connect, or disconnect to/from a slot, you simply call ``connect(const slot_type&)`` and ``disconnect(const slot_type&)``, respectively. This is almost exactly the same as it is in [boost::signals](http://www.boost.org/doc/libs/1_53_0/doc/html/signals.html).
 
 #### Example:
 
@@ -151,21 +151,19 @@ wink::signal<slot> sender;
 // connect
 sender.connect(slot::bind(&doSomething));
 
-// dis-connect
+// disconnect
 sender.disconnect(slot::bind(&doSomething));
 ```
 
 ### 3. Emiiting the slots in your signal
 
-// TODO: The rest of the tutorial
-
-To emit events to your subcribers (call-backs), you simply call the ``emit(T...)`` function. Where ``T...`` is the paramters of your events.
+To emit events to your connected slots, you simply call the ``emit(T...)`` function, or use the ``()(T..)`` operator on the signal object, where ``T...`` is the paramters of your events.
 
 #### Example:
 
 ```
 // create a sender
-EventSender<void (int)> sender;
+wink::signal<wink::slot<void (int)>> sender;
 
 // subcsribe to events...
 // do other things 
@@ -176,7 +174,14 @@ sender.emit(32);
 
 ## Event Queues
 
-An event queue is used for when you don't want to send events out immediately. 
+An event queue is used for when you don't want to send events out immediately.
+The basic idea of an event queue is as follows:
+
+1. You push data onto the event queue, when an event occurs
+2. Later throughout the program, you call ``emit()`` or ``cemit()``, where ``emit()`` clears the data you pushed on the queue, and ``cemit()`` does not (as it is the constant version of ``emit()``).
+3. You start this process all over again
+
+An event queue is usually handy when you are doing something quite expensive and you wish to deal with the events later in your program. Or, where you require to process the event but if you fire the event immediately it will disrupt what you are doing (e.g. looping through a vector and erasing elements).
 
 ### 1. Create an Event Data Structure
 
@@ -198,52 +203,34 @@ struct CollisionEvent
 #### NOTE:
 
 ----
-Feel free to make the data non-const, especially if you need to modify sent data.
+Feel free to make the data non-const, especially if you need to modify sent data, please note that the event data sent by an event queue will be a const reference. (i.e. const T&, where T is the event data).
 
 ----
 
 ### 2. Create an EventQueue Object
-To create an EventQueue, you must first ``#include "EventQueue.h"``, and then define an object. The template-paramter for EventQueue is the type of data you are going to send.
+
+To create an EventQueue, you must first ``#include "wink/event_queue.h"``, and then define an object. The template-paramter for ``event_queue<T>`` is the type of data you are going to send.
 
 #### Example:
 
 ```
-EventQueue<CollisionEvent> collisionEventQueue;
+wink::event_queue<CollisionEvent> collisionEventQueue;
 ```
 
-### 3. Subscribing/Un-subscribing to events
+### 3. Connecting/disconnecting slots
 
-Subscribing and un-subcribing to/from an event queue is the same as an event sender, you call ``add()`` to subscribe, and ``remove()`` to unsubscribe. As with an event sender, ``add()`` and ``remove()`` does have overloads so you can use it with member functions.
-
-Example:
-
-```
-// our call-back
-void handleCollision(const CollisionEvent&)
-{
-	std::cout << "Collision occured!\n";
-}
-
-EventQueue<CollisionEvent> collisionEventQueue;
-
-// subscribe to events sent
-collisionEventQueue.add(&handleCollision);
-
-// un-subscribe the event
-collisionEventQueue.remove(&handleCollision);
-
-```
+Connecting and disconnecting slots is the same as a signal.
 
 #### NOTE:
 
 ---
 
-EventQueue actually uses an EventSender object to send out events. The only difference is, an ``EventQueue<T>`` uses the following function prototype:
+event_queue actually uses an EventSender object to send out events. The only difference is, an ``event_queue<T>`` uses the following function prototype:
 
 ```
 void foo(const T&);
 ```
-The name of your method may be anything, as with an event sender, but all functions MUST return void. Unlike an event sender, where it is optional (but doesn't really make sense).
+The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
 
 ---
 
@@ -255,7 +242,7 @@ To push data to the event queue, simply call the method ``push(const T&)``, wher
 #### Example:
 
 ```
-EventQueue<CollisionEvent> collisionEventQueue;
+wink::event_queue<CollisionEvent> collisionEventQueue;
 
 // ...
 
@@ -266,10 +253,19 @@ collisionEventQueue.push(CollisionEvent(entity1, entity2));
 
 ### 5. Emitting your events
 
-Finally, to emit your events you have pushed to the event queue, call ```emit()``` on your event queue object. Please note, that this will clear the data that you have pushed to the event queue.
+Finally, to emit your events you have pushed to the event queue, call ``emit()``, ``cemit()``, or use the ``()`` operator, on your event queue object. ``cemit()`` is a constant version of the ``emit()`` function, and therefore cannot modify your event queue, meaning that it will not ``clear()`` the data you pushed onto the queue.
+
+#### NOTE:
+
+---
+The ``()`` operator overload on wink::event_queue objects will clear your pushed data depending if the object is constant. If it is a constant object/reference, it will _not_ clear your data, otherwise it will.
+
+---
 
 #### Example:
 
 ```
-collisionEventQueue.emit(); // emit my events :)
+collisionEventQueue(); 			// may or may not clear pushed data
+collisionEventQueue.cemit(); 	// will not clear pushed data
+collisionEventQueue.emit(); 	// will clear pushed data
 ```
