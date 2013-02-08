@@ -30,23 +30,23 @@ This library is FAST, it uses the [Fastest Possible C++ Delegates](http://www.co
 
 In order to test out the performance yourself, you can compile and run the ``Benchmark.cpp`` file in the ``examples/`` directory.
 
-Here's the EventSender and EventQueue performance compared to regular function calls:
+Here's the ``signal`` and ``event_queue`` performance compared to a regular function call:
 
 	BENCH MARK TO SEND 100000000 EVENTS
 
 	Using regular function calls to handle events:
-	Took: 6.11206 seconds
-	Using signal<slot<void(int)> > to handle events:
-	Took: 6.20876 seconds
+	Took: 6.01411 seconds
+	Using signal<slot<void(int)>> to handle events:
+	Took: 6.02384 seconds
 	Using event_queue<int> to handle events:
-	Took: 8.82542 seconds
+	Took: 6.01099 seconds
 
 As you can see, this library is quite fast compared to regular function calls.
 
 #### NOTE:
 
 ---
-This is using just one call-back for the events.
+This benchmark, uses only one call-back for the ``event_queue`` and ``signal`` objects.
 
 ---
 

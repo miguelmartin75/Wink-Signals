@@ -202,16 +202,7 @@ int main(int argc, char* argv[])
 #endif // DO_PROPER_BENCHMARK
 		
 		sender.reserve(numbersToSend.size()); // reserve some space
-		
-		//sender.push({ 1, 2, 3});
 		sender.push(numbersToSend);
-		std::cout << numbersToSend.size() << '\n';
-		
-		// push data
-		for(std::vector<int>::iterator i = numbersToSend.begin(); i != numbersToSend.end(); ++i)
-		{
-			sender.push(int(*i));
-		}
 		
 		for(int i = 0; i < AMOUNT_OF_TIMES_TO_SEND_EVENT; ++i)
 		{
