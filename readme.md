@@ -20,18 +20,20 @@ This library is a header-only library (mainly because of templates), therefore t
 
 This library is FAST, it uses the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library in order to achieve this performance. You can read about the performance of that library on [this](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) website.
 
-In order to test out the performance yourself, you can compile and run the ``Benchmark.cpp`` file in the ``examples/`` directory.
+In order to test out the performance yourself, you can compile and run the `Benchmark.cpp` file in the `examples/` directory.
 
-Here's the ``signal`` and ``event_queue`` performance compared to a regular function call:
+Here's the `signal` and `event_queue` performance compared to a regular function call:
 
-	BENCH MARK TO SEND 100000000 EVENTS
+```
+BENCH MARK TO SEND 100000000 EVENTS
 
-	Using regular function calls to handle events:
-	Took: 6.01411 seconds
-	Using signal<slot<void(int)>> to handle events:
-	Took: 6.02384 seconds
-	Using event_queue<int> to handle events:
-	Took: 6.01099 seconds
+Using regular function calls to handle events:
+Took: 6.01411 seconds
+Using signal<slot<void(int)>> to handle events:
+Took: 6.02384 seconds
+Using event_queue<int> to handle events:
+Took: 6.01099 seconds
+```
 
 As you can see, this library is quite fast compared to regular function calls.
 
@@ -41,7 +43,7 @@ As you can see, this library is quite fast compared to regular function calls.
 
 ## Usage
 
-The library is contained within the wink/ directory and is within the ``wink`` namespace.
+The library is contained within the wink/ directory and is within the `wink` namespace.
 
 ### Slots
 
@@ -53,7 +55,7 @@ In order to create a slot, you simply ``#include "wink/slot.h"`` and then create
 
 ##### Example:
 
-```
+```c++
 wink::slot<void (int)> mySlot;
 ```
 
@@ -64,8 +66,7 @@ In order to bind to a member function or regular function, you must call the sta
 
 ##### Example:
 
-```
-c++
+```c++
 // Through the constructor
 Foo bar;
 wink::slot<void (int)> slotMemberFn(&bar, &Foo::foobar);
@@ -83,8 +84,7 @@ slot slotGlobalFn = slot::bind(&foo);
 
 To call the slot, simply use the ``operator()``, as you would with a regular function/method. This can take any number of arguments
 
-```
-c++
+```c++
 wink::slot<void (int, int, int)> slot(&foo);
 
 slot(3, 4, 5); // call the slot
@@ -104,8 +104,7 @@ To create a signal, you create an object of the class ``wink::signal<T>``, where
 
 ##### Example:
 
-```
-c++
+```c++
 // Create a signal that uses slots with a function prototype of void (int)
 wink::signal<wink::slot<void (int)> > signal;
 ```
@@ -125,8 +124,7 @@ To connect, or disconnect to/from a slot, you simply call ``connect(const slot_t
 
 ##### Example:
 
-```
-c++
+```c++
 void doSomething(int x)
 {
 	std::cout << x << '\n';
@@ -151,8 +149,7 @@ To emit events to your connected slots, you simply call the ``emit(T...)`` funct
 
 ###### Example:
 
-```
-c++
+```c++
 // create a sender
 wink::signal<wink::slot<void (int)>> sender;
 
@@ -180,8 +177,7 @@ In order to create an event queue, you must have a data structure that resembles
 
 ##### Example:
 
-```
-c++
+```c++
 struct CollisionEvent
 {
 	const Entity& obj1, obj2;
@@ -203,8 +199,7 @@ To create an EventQueue, you must first `#include "wink/event_queue.h"`, and the
 
 ##### Example:
 
-```
-c++
+```c++
 wink::event_queue<CollisionEvent> collisionEventQueue;
 ```
 
@@ -216,8 +211,7 @@ Connecting and disconnecting slots is the same as a signal.
 
 >event_queue actually uses an EventSender object to send out events. The only difference is, an ``event_queue<T>`` uses the following function prototype:
 
->```
-c++
+>```c++
 void foo(const T&);
 ```
 The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
@@ -229,8 +223,7 @@ To push data to the event queue, simply call the method ``push(const T&)``, wher
 
 ##### Example:
 
-```
-c++
+```c++
 wink::event_queue<CollisionEvent> collisionEventQueue;
 
 // ...
@@ -250,8 +243,7 @@ Finally, to emit your events you have pushed to the event queue, call ``emit()``
 
 ##### Example:
 
-```
-c++
+```c++
 collisionEventQueue(); 			// may or may not clear pushed data
 collisionEventQueue.cemit(); 	// will not clear pushed data
 collisionEventQueue.emit(); 	// will clear pushed data
