@@ -4,19 +4,19 @@ A fast template signal library, for C++, using the [Fastest Possible C++ Delegat
 
 Please read the tutorial further down if you wish to use the library.
 
-## Author
+# Author
 
 Miguel Martin - [miguel.martin7.5@hotmail.com](mailto:miguel.martin7.5@hotmail.com)
 
-## Tested Compilers
+# Tested Compilers
 
 - clang 3.1/Apple Clang Version 4.1 (LLVM 3.1svn)
 
-## Installation
+# Installation
 
 This library is a header-only library (mainly because of templates), therefore there is no installation. Just place it in your project, or somewhere your compiler can find it and you're all set!
 
-## Performance
+# Performance
 
 This library is FAST, it uses the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library in order to achieve this performance. You can read about the performance of that library on [this](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) website.
 
@@ -28,43 +28,42 @@ Here's the `signal` and `event_queue` performance compared to a regular function
 BENCH MARK TO SEND 100000000 EVENTS
 
 Using regular function calls to handle events:
-Took: 6.01411 seconds
+Took: 5.90353 seconds
 Using signal<slot<void(int)>> to handle events:
-Took: 6.02384 seconds
+Took: 5.8579 seconds
 Using event_queue<int> to handle events:
-Took: 6.01099 seconds
+Took: 5.96127 seconds
 ```
 
 As you can see, this library is quite fast compared to regular function calls.
 
-#### NOTE:
+> #### **NOTE:**
+> This benchmark, uses only one call-back for the ``event_queue`` and ``signal`` objects.
 
->This benchmark, uses only one call-back for the ``event_queue`` and ``signal`` objects.
-
-## Usage
+# Usage
 
 The library is contained within the wink/ directory and is within the `wink` namespace.
 
-### Slots
+## Slots
 
 Slots are an alternate way of defining a function pointer. They are almost as fast as a normal function call, since they use the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library, for their implementation.
 
-#### 1. Create a slot
+### 1. Create a slot
 
 In order to create a slot, you simply ``#include "wink/slot.h"`` and then create an object of type ``wink::slot<T>``, where T is the function prototype. This syntax is the same as ``std::function<T>``, or ``boost::signal<T>``.
 
-##### Example:
+#### Example:
 
 ```c++
 wink::slot<void (int)> mySlot;
 ```
 
 
-#### 2. Binding to functions and member functions
+### 2. Binding to functions and member functions
 
 In order to bind to a member function or regular function, you must call the static function ``slot<T>::bind()``, or alternatively pass in the member function or function when constructing your slot.
 
-##### Example:
+#### Example:
 
 ```c++
 // Through the constructor
@@ -80,7 +79,7 @@ slot slotMemberFn = slot::bind(&bar, &Foo::foobar);
 slot slotGlobalFn = slot::bind(&foo);
 ```
 
-#### 3. Calling the slot
+### 3. Calling the slot
 
 To call the slot, simply use the ``operator()``, as you would with a regular function/method. This can take any number of arguments
 
@@ -90,39 +89,38 @@ wink::slot<void (int, int, int)> slot(&foo);
 slot(3, 4, 5); // call the slot
 ```
 
-##### NOTE:
-
+> #### **NOTE:**
 >If binding to an object, when the object is destroyed, it is undefined behaviour. The slot may actually still call the object's method, or it may do something else. I reccomend, if you can, to not call the slot if you destroy an object.
 
-### Signals
+## Signals
 
 An event sender is used to send events to multiple call-backs immediately. 
 
-#### 1. Create a signal
+### 1. Create a signal
 
 To create a signal, you create an object of the class ``wink::signal<T>``, where T is a slot.
 
-##### Example:
+#### Example:
 
 ```c++
 // Create a signal that uses slots with a function prototype of void (int)
 wink::signal<wink::slot<void (int)> > signal;
 ```
 
-##### NOTE:
-
+> #### **NOTE:**
 >It is reccomended to have a return value that is void, as returning a value with multiple call-backs does not make much sense.
 
-#### 2. Connecting/Disconnecting slots
+### 2. Connecting/Disconnecting slots
 
-To connect, or disconnect to/from a slot, you simply call ``connect(const slot_type&)`` and ``disconnect(const slot_type&)``, respectively. This is almost exactly the same as it is in [boost::signals](http://www.boost.org/doc/libs/1_53_0/doc/html/signals.html).
+To connect, or disconnect to/from a slot, you simply call ``connect(Args&&…)`` and ``disconnect(Args&&...)``, respectively. Where your arguments could be a slot itself, a call to `slot::bind`, or the arguments to construct a slot (the same arguments you would pass to `slot::bind`).
 
-##### NOTE:
+This is almost exactly the same as it is in [boost::signals](http://www.boost.org/doc/libs/1_53_0/doc/html/signals.html).
 
+> #### **NOTE:**
 > slots aren't required to use with a signal, you can easily use std::function (or any other object that overloads operator())over the built-in slot class for this library.
 
 
-##### Example:
+#### Example:
 
 ```c++
 void doSomething(int x)
@@ -137,10 +135,10 @@ typedef wink::slot<void (int)> slot;
 wink::signal<slot> sender;
 
 // connect
-sender.connect(slot::bind(&doSomething));
+sender.connect(&doSomething);
 
 // disconnect
-sender.disconnect(slot::bind(&doSomething));
+sender.disconnect(&doSomething);
 ```
 
 #### 3. Emiiting the slots in your signal
@@ -193,7 +191,7 @@ struct CollisionEvent
 
 >Feel free to make the data non-const, especially if you need to modify sent data, please note that the event data sent by an event queue will be a const reference. (i.e. const T&, where T is the event data).
 
-#### 2. Create an EventQueue Object
+#### 2. Create an event_queue Object
 
 To create an EventQueue, you must first `#include "wink/event_queue.h"`, and then define an object. The template-paramter for `event_queue<T>` is the type of data you are going to send.
 
@@ -205,7 +203,7 @@ wink::event_queue<CollisionEvent> collisionEventQueue;
 
 #### 3. Connecting/disconnecting slots
 
-Connecting and disconnecting slots is the same as a signal.
+Connecting and disconnecting slots for an `event_queue` is the same as `wink::signal`.
 
 ##### NOTE:
 
