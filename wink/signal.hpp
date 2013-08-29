@@ -47,27 +47,11 @@ namespace wink
 		typedef Slot slot_type;
 		
 		/// Connects a slot to the signal
-		/// \param slot The slot you wish to connect
-		/// \see bind To bind a slot to a function
-		void connect(const slot_type& slot)
-		{
-			_slots.push_back(slot);
-		}
-		
-		/// Connects a slot to the signal
 		/// \param args The arguments you wish to construct the slot with to connect to the signal
 		template <typename... Args>
 		void connect(Args&&... args)
 		{
 			_slots.push_back(slot_type(args...));
-		}
-		
-		/// Disconnects a slot from the signal
-		/// \param slot The slot you wish to disconnect
-		/// \see bind To bind a slot to a function
-		void disconnect(const slot_type& slot)
-		{
-			_slots.erase(std::find(_slots.begin(), _slots.end(), slot));
 		}
 		
 		/// Disconnects a slot from the signal

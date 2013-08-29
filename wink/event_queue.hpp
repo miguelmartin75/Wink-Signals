@@ -82,20 +82,10 @@ namespace wink
 		// Signal-specific methods
 		
 		/// Connects a slot to the event queue
-		/// \param slot The slot you wish to connect
-		void connect(const typename signal_type::slot_type& slot)
-		{ _signal.connect(slot); }
-		
-		/// Connects a slot to the event queue
 		/// \param args Arguments used to construct the slot to connect
 		template <typename... Args>
 		void connect(Args&&... args)
 		{ _signal.connect(args...); }
-		
-		/// Disconnects a slot to the event queue
-		/// \param slot The slot you wish to disconnect
-		void disconnect(const typename signal_type::slot_type& slot)
-		{ _signal.disconnect(slot); }
 		
 		/// Disconnects a slot to the event queue
 		/// \param args Arguments used to construct the slot to disconnect
