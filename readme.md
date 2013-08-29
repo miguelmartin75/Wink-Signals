@@ -61,7 +61,10 @@ wink::slot<void (int)> mySlot;
 
 ### 2. Binding to functions and member functions
 
-In order to bind to a member function or regular function, you must call the static function ``slot<T>::bind()``, or alternatively pass in the member function or function when constructing your slot.
+In order to bind to a member function or regular function, you must either call the static function ``slot<T>::bind()``, or alternatively call the overloaded constructor with the appropriate arguments. The apprproate arguments are as follows:
+
+- (`[function pointer]`)
+- (`[object]`, `[member function pointer]`)
 
 #### Example:
 
@@ -72,7 +75,6 @@ wink::slot<void (int)> slotMemberFn(&bar, &Foo::foobar);
 slot slotGlobalFn(&foo);
 
 // With the use of slot<T>::bind
-
 typedef wink::slot<void (int)> slot;
 Foo bar;
 slot slotMemberFn = slot::bind(&bar, &Foo::foobar);
@@ -228,7 +230,6 @@ wink::event_queue<CollisionEvent> collisionEventQueue;
 
 // push some data to the event queue
 collisionEventQueue.push(CollisionEvent(entity1, entity2));
-
 ```
 
 #### 5. Emitting your events
