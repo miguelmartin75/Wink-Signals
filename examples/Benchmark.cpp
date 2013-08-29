@@ -47,8 +47,8 @@
 #	include <chrono> // to measure time
 #endif // DO_PROPER_BENCHMARK
 
-#include "wink/signal.h"
-#include "wink/event_queue.h"
+#include <wink/signal.hpp>
+#include <wink/event_queue.hpp>
 
 // Class to handle events
 struct EventHandler
@@ -156,12 +156,11 @@ int main(int argc, char* argv[])
 #endif // DO_PROPER_BENCHMARK
 	
 	{
-		typedef wink::slot<void (int)> slot;
-		typedef wink::signal<slot> signal;
+		typedef wink::signal<wink::slot<void (int)> > signal;
 		EventHandler handler;
 		signal sender;
 		
-		sender.connect(slot::bind(&handler, &EventHandler::handleEvent));
+		sender.connect(&handler, &EventHandler::handleEvent);
 		
 		std::cout << "Using signal<slot<void(int)>> to handle events:\n";
 		
@@ -192,7 +191,7 @@ int main(int argc, char* argv[])
 		EventHandler handler;
 		typedef wink::event_queue<int> event_queue;
 		event_queue sender;
-		sender.connect(event_queue::slot_type::bind(&handler, &EventHandler::queueHandleEvent));
+		sender.connect(&handler, &EventHandler::queueHandleEvent);
 		
 		std::cout << "Using event_queue<int> to handle events:\n";
 		
