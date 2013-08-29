@@ -26,11 +26,12 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_EVENT_QUEUE_H__
-#define __WINK_EVENT_QUEUE_H__
+#ifndef __WINK_EVENT_QUEUE_HPP__
+#define __WINK_EVENT_QUEUE_HPP__
 
 #include <queue>
-#include "signal.h"
+
+#include <wink/signal.hpp>
 
 namespace wink
 {
@@ -49,8 +50,8 @@ namespace wink
 	{
 	private:
 		
-		typedef std::vector<EventData> __event_queue;
-		typedef event_queue<EventData> __this_type;
+		typedef std::vector<EventData> impl_event_queue;
+		typedef event_queue<EventData> this_type;
 		
 	public:
 		
@@ -63,20 +64,20 @@ namespace wink
 		typedef std::vector<EventData> event_data_array;
 		
 		// Queue-specific typedefs
-		typedef typename __event_queue::reference reference;
-		typedef typename __event_queue::const_reference const_reference;
-		typedef typename __event_queue::pointer pointer;
-		typedef typename __event_queue::const_pointer const_pointer;
-		typedef typename __event_queue::iterator iterator;
-		typedef typename __event_queue::const_iterator const_iterator;
-		typedef typename __event_queue::reverse_iterator reverse_iterator;
-		typedef typename __event_queue::const_reverse_iterator const_reverse_iterator;
-		typedef typename __event_queue::size_type size_type;
-		typedef typename __event_queue::difference_type difference_type;
+		typedef typename impl_event_queue::reference reference;
+		typedef typename impl_event_queue::const_reference const_reference;
+		typedef typename impl_event_queue::pointer pointer;
+		typedef typename impl_event_queue::const_pointer const_pointer;
+		typedef typename impl_event_queue::iterator iterator;
+		typedef typename impl_event_queue::const_iterator const_iterator;
+		typedef typename impl_event_queue::reverse_iterator reverse_iterator;
+		typedef typename impl_event_queue::const_reverse_iterator const_reverse_iterator;
+		typedef typename impl_event_queue::size_type size_type;
+		typedef typename impl_event_queue::difference_type difference_type;
 		
 		event_queue() {}
-		event_queue(const __this_type& _event_queue) = default;
-		event_queue& operator=(const __this_type& queue) = default;
+		event_queue(const this_type& _event_queue) = default;
+		event_queue& operator=(const this_type& queue) = default;
 		
 		// Signal-specific methods
 		
@@ -85,10 +86,22 @@ namespace wink
 		void connect(const typename signal_type::slot_type& slot)
 		{ _signal.connect(slot); }
 		
+		/// Connects a slot to the event queue
+		/// \param args Arguments used to construct the slot to connect
+		template <typename... Args>
+		void connect(Args&&... args)
+		{ _signal.connect(args...); }
+		
 		/// Disconnects a slot to the event queue
 		/// \param slot The slot you wish to disconnect
 		void disconnect(const typename signal_type::slot_type& slot)
 		{ _signal.disconnect(slot); }
+		
+		/// Disconnects a slot to the event queue
+		/// \param args Arguments used to construct the slot to disconnect
+		template <typename... Args>
+		void disconnect(Args&&... args)
+		{ _signal.disconnect(args...); }
 		
 		/// Emits out events, without modifying the event queue
 		/// \note
@@ -219,7 +232,7 @@ namespace wink
 	private:
 		
 		/// The queue of data in the event queue
-		__event_queue _event_data_queue;
+		impl_event_queue _event_data_queue;
 		
 		/// The signal that is used to send events for the event queue
 		signal_type _signal;

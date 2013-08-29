@@ -1,6 +1,6 @@
 ///
 /// Wink Signals
-/// Copyright (C) 2012 Anax Creations. All rights reserved.
+/// Copyright (C) 2013 Miguel Martin (miguel.martin7.5@hotmail.com)
 ///
 ///
 /// This software is provided 'as-is', without any express or implied warranty.
@@ -26,12 +26,12 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_SIGNAL_H__
-#define __WINK_SIGNAL_H__
+#ifndef __WINK_SIGNAL_HPP__
+#define __WINK_SIGNAL_HPP__
 
 #include <vector>
 
-#include "slot.h"
+#include <wink/slot.hpp>
 
 namespace wink
 {
@@ -40,18 +40,26 @@ namespace wink
 	{
 	private:
 		
-		typedef signal<Slot> __this_type;
+		typedef signal<Slot> this_type;
 		
 	public:
 		
 		typedef Slot slot_type;
-				
+		
 		/// Connects a slot to the signal
 		/// \param slot The slot you wish to connect
 		/// \see bind To bind a slot to a function
 		void connect(const slot_type& slot)
 		{
 			_slots.push_back(slot);
+		}
+		
+		/// Connects a slot to the signal
+		/// \param args The arguments you wish to construct the slot with to connect to the signal
+		template <typename... Args>
+		void connect(Args&&... args)
+		{
+			_slots.push_back(slot_type(args...));
 		}
 		
 		/// Disconnects a slot from the signal
@@ -62,12 +70,20 @@ namespace wink
 			_slots.erase(std::find(_slots.begin(), _slots.end(), slot));
 		}
 		
+		/// Disconnects a slot from the signal
+		/// \param args The arguments you wish to construct a slot with
+		template <typename... Args>
+		void disconnect(Args&&... args)
+		{
+			_slots.erase(std::find(_slots.begin(), _slots.end(), slot_type(args...)));
+		}
+		
 		/// Emits the events you wish to send to the call-backs
 		/// \param args The arguments to emit to the slots connected to the signal
 		template <class ...Args>
 		void emit(Args&&... args) const
 		{
-			for(typename __slot_array::const_iterator i = _slots.begin(); i != _slots.end(); ++i)
+			for(typename slot_array::const_iterator i = _slots.begin(); i != _slots.end(); ++i)
 			{
 				(*i)(args...);
 			}
@@ -85,19 +101,19 @@ namespace wink
 		
 		// comparision operators for sorting and comparing
 		
-		bool operator==(const __this_type& signal) const
+		bool operator==(const this_type& signal) const
 		{ return _slots == signal._slots; }
 		
-		bool operator!=(const __this_type& signal) const
+		bool operator!=(const this_type& signal) const
 		{ return !operator==(signal); }
 		
 	private:
 		
 		/// defines an array of slots
-		typedef std::vector<slot_type> __slot_array;
+		typedef std::vector<slot_type> slot_array;
 		
 		/// The slots connected to the signal
-		__slot_array _slots;
+		slot_array _slots;
 	};
 }
 

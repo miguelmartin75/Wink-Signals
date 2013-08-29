@@ -1,6 +1,6 @@
 ///
 /// Wink Signals
-/// Copyright (C) 2012 Anax Creations. All rights reserved.
+/// Copyright (C) 2013 Miguel Martin (miguel.martin7.5@hotmail.com)
 ///
 ///
 /// This software is provided 'as-is', without any express or implied warranty.
@@ -26,10 +26,10 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_SLOT_H__
-#define __WINK_SLOT_H__
+#ifndef __WINK_SLOT_HPP__
+#define __WINK_SLOT_HPP__
 
-#include "detail/FastDelegate.h"
+#include <wink/detail/FastDelegate.h>
 
 namespace wink
 {
@@ -43,7 +43,7 @@ namespace wink
 	{
 	private:
 		
-		typedef slot<Signature> __this_type;
+		typedef slot<Signature> this_type;
 		
 	public:
 		
@@ -63,7 +63,7 @@ namespace wink
 		template <typename T, typename MemFnPtr>
 		static slot<Signature> bind(T* obj, MemFnPtr fn)
 		{
-			return __this_type(obj, fn);
+			return this_type(obj, fn);
 		}
 		
 		/// Construct a slot with no call-back
@@ -81,12 +81,12 @@ namespace wink
 		/// \param fn The member function of the object
 		template <typename T, typename MemFnPtr>
 		slot(T* obj, MemFnPtr fn)
-		: _delegate(obj, fn)
+			: _delegate(obj, fn)
 		{}
 		
 		/// Copy constructor
-		slot(const __this_type& slot)
-		: _delegate(slot._delegate)
+		slot(const this_type& slot)
+			: _delegate(slot._delegate)
 		{}
 		
 		/// Destructor
@@ -95,7 +95,7 @@ namespace wink
 		/// Assignment operator
 		/// \param slot The slot you wish to assign to
 		/// \return *this
-		__this_type& operator=(const __this_type& slot)
+		this_type& operator=(const this_type& slot)
 		{
 			_delegate = slot._delegate;
 			return *this;
@@ -112,31 +112,31 @@ namespace wink
 		
 		// comparision operators for sorting and comparing
 		
-		bool operator==(const __this_type& slot) const
+		bool operator==(const this_type& slot) const
 		{ return _delegate == slot._delegate; }
 		
-		bool operator!=(const __this_type& slot) const
+		bool operator!=(const this_type& slot) const
 		{ return !operator==(slot); }
 		
-		bool operator<(const __this_type& slot) const
+		bool operator<(const this_type& slot) const
 		{ return _delegate < slot._delegate; }
 		
-		bool operator>(const __this_type& slot) const
+		bool operator>(const this_type& slot) const
 		{ return slot._delegate < _delegate; }
 		
-		bool operator<=(const __this_type& slot) const
+		bool operator<=(const this_type& slot) const
 		{ return operator>(slot); }
 		
-		bool operator>=(const __this_type& slot) const
+		bool operator>=(const this_type& slot) const
 		{ return operator<(slot); }
 		
 	private:
 		
 		/// The implementation of the slot, as a delegate.
-		typedef fastdelegate::FastDelegate<Signature> __impl_delegate;
+		typedef fastdelegate::FastDelegate<Signature> impl_delegate;
 		
 		
-		__impl_delegate _delegate;
+		impl_delegate _delegate;
 	};
 }
 
