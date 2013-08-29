@@ -109,7 +109,7 @@ namespace wink
 		/// c stands for constant.
 		void cemit() const
 		{
-			for(typename __event_queue::const_iterator i = _event_data_queue.begin(); i != _event_data_queue.end(); ++i)
+			for(typename event_queue::const_iterator i = _event_data_queue.begin(); i != _event_data_queue.end(); ++i)
 			{
 				_signal(*i); // send out the signal
 			}
