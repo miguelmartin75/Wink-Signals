@@ -122,13 +122,13 @@ namespace wink
 		{ return _delegate < slot._delegate; }
 		
 		bool operator>(const this_type& slot) const
-		{ return slot._delegate < _delegate; }
+		{ return slot._delegate > _delegate; }
 		
 		bool operator<=(const this_type& slot) const
-		{ return operator>(slot); }
+		{ return !operator>(slot); }
 		
 		bool operator>=(const this_type& slot) const
-		{ return operator<(slot); }
+		{ return !operator<(slot); }
 		
 	private:
 		
