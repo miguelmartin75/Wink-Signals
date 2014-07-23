@@ -49,22 +49,7 @@ namespace wink
 		
 		/// A static function pointer with the correct signature
 		typedef Signature FnPtr;
-		
-		/// Binds a function
-		/// \param fn The function you wish to bind
-		/// \note This function must be either marked as static, or not inside a class/struct (i.e. in global scope)
-		static slot<Signature> bind(Signature fn)
-		{
-			return slot_type(fn);
-		}
-		
-		/// Binds a member function
-		/// \param obj The object you wish
-		template <typename T, typename MemFnPtr>
-		static slot<Signature> bind(T* obj, MemFnPtr fn)
-		{
-			return this_type(obj, fn);
-		}
+
 		
 		/// Construct a slot with no call-back
 		slot()
@@ -134,7 +119,6 @@ namespace wink
 		
 		/// The implementation of the slot, as a delegate.
 		typedef fastdelegate::FastDelegate<Signature> impl_delegate;
-		
 		
 		impl_delegate _delegate;
 	};
