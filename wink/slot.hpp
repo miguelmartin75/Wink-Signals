@@ -29,6 +29,8 @@
 #ifndef __WINK_SLOT_HPP__
 #define __WINK_SLOT_HPP__
 
+#include <utility>
+
 #include <wink/detail/FastDelegate.h>
 
 namespace wink
@@ -58,7 +60,7 @@ namespace wink
 		/// Construct a slot with a static/global function call-back
 		/// \param fn The static/global function
 		slot(FnPtr fn)
-		: _delegate(fn)
+            : _delegate(fn)
 		{}
 		
 		/// Construct a slot with a member-function
@@ -91,7 +93,7 @@ namespace wink
 		template <class ...Args>
 		void operator()(Args&&... args) const
 		{
-			_delegate(args...);
+			_delegate(std::forward(args)...);
 		}
 		
 		
