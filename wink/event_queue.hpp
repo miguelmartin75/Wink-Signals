@@ -1,6 +1,6 @@
 ///
 /// Wink Signals
-/// Copyright (C) 2012 Anax Creations. All rights reserved.
+/// Copyright (C) 2013-2014 Miguel Martin (miguel@miguel-martin.com)
 ///
 ///
 /// This software is provided 'as-is', without any express or implied warranty.

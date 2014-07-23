@@ -1,6 +1,6 @@
 ///
 /// Wink Signals - Benchmark
-/// Copyright (C) 2012 Anax Creations. All rights reserved.
+/// Copyright (C) 2013-2014 Miguel Martin (miguel@miguel-martin.com)
 ///
 ///
 /// This software is provided 'as-is', without any express or implied warranty.
@@ -8,7 +8,7 @@
 /// use of this software.
 ///
 /// Permission is hereby granted, free of charge, to any person
-/// obtaining a copy of this software and associated documentation files (the "Software"),
+/// obtaining a copy of this software and associated documentation files (miguel@miguel-martin.com),
 /// to deal in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
