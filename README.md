@@ -6,7 +6,7 @@ Please read the tutorial further down if you wish to use the library.
 
 # Author
 
-Miguel Martin - [miguel.martin7.5@hotmail.com](mailto:miguel.martin7.5@hotmail.com)
+Miguel Martin - [miguel@miguel-martin.com](mailto:miguel@miguel-martin.com)
 
 # Tested Compilers
 
