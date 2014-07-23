@@ -51,7 +51,7 @@ namespace wink
 		template <typename... Args>
 		void connect(Args&&... args)
 		{
-			_slots.push_back(slot_type(args...));
+			_slots.emplace_back(args..);
 		}
 		
 		/// Disconnects a slot from the signal
