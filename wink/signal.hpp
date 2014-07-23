@@ -52,7 +52,7 @@ namespace wink
 		template <typename... Args>
 		void connect(Args&&... args)
 		{
-			_slots.emplace_back(sdtd::forward(args)..);
+			_slots.emplace_back(std::forward<Args>(args)...);
 		}
 		
 		/// Disconnects a slot from the signal
@@ -60,7 +60,7 @@ namespace wink
 		template <typename... Args>
 		void disconnect(Args&&... args)
 		{
-			_slots.erase(std::find(_slots.begin(), _slots.end(), slot_type(std::forward(args)...)));
+			_slots.erase(std::find(_slots.begin(), _slots.end(), slot_type(std::forward<Args>(args)...)));
 		}
 		
 		/// Emits the events you wish to send to the call-backs
@@ -70,7 +70,7 @@ namespace wink
 		{
 			for(typename slot_array::const_iterator i = _slots.begin(); i != _slots.end(); ++i)
 			{
-				(*i)(std::forward(args)...);
+				(*i)(std::forward<Args>(args)...);
 			}
 		}
 		
@@ -81,7 +81,7 @@ namespace wink
 		template <class ...Args>
 		void operator()(Args&&... args) const
 		{
-			emit(std::forward(args)...);
+			emit(std::forward<Args>(args)...);
 		}
 		
 		// comparision operators for sorting and comparing
@@ -101,5 +101,4 @@ namespace wink
 		slot_array _slots;
 	};
 }
-
 #endif // __WINK_SIGNAL_H__

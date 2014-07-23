@@ -85,13 +85,13 @@ namespace wink
 		/// \param args Arguments used to construct the slot to connect
 		template <typename... Args>
 		void connect(Args&&... args)
-		{ _signal.connect(std::forward(args)...); }
+		{ _signal.connect(std::forward<Args>(args)...); }
 		
 		/// Disconnects a slot to the event queue
 		/// \param args Arguments used to construct the slot to disconnect
 		template <typename... Args>
 		void disconnect(Args&&... args)
-		{ _signal.disconnect(std::forward(args)...); }
+		{ _signal.disconnect(std::forward<Args>(args)...); }
 		
 		/// Emits out events, without modifying the event queue
 		/// \note

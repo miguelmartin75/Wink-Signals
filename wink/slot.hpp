@@ -93,7 +93,7 @@ namespace wink
 		template <class ...Args>
 		void operator()(Args&&... args) const
 		{
-			_delegate(std::forward(args)...);
+			_delegate(std::forward<Args>(args)...);
 		}
 		
 		
