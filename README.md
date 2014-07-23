@@ -20,11 +20,12 @@ This library is a header-only library (mainly because of templates), therefore t
 
 This library is FAST, it uses the [Fastest Possible C++ Delegates](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) library in order to achieve this performance. You can read about the performance of that library on [this](http://www.codeproject.com/Articles/7150/Member-Function-Pointers-and-the-Fastest-Possible) website.
 
-In order to test out the performance yourself, you can compile and run the `Benchmark.cpp` file in the `examples/` directory.
+In order to test out the performance yourself, you can compile and run the `Benchmark.cpp` file in the `examples/` directory (run `make benchmark`).
 
 Here's the `signal` and `event_queue` performance compared to a regular function call:
 
 ```
+$ cd examples; make benchmark
 BENCH MARK TO SEND 100000000 EVENTS
 
 Using regular function calls to handle events:
