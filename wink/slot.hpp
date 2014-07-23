@@ -26,8 +26,8 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_SLOT_HPP__
-#define __WINK_SLOT_HPP__
+#ifndef WINK_SLOT_HPP
+#define WINK_SLOT_HPP
 
 #include <utility>
 
@@ -127,4 +127,4 @@ namespace wink
 }
 
 
-#endif // __WINK_SLOT_H__
+#endif // WINK_SLOT_HPP

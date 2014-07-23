@@ -26,8 +26,8 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_SIGNAL_HPP__
-#define __WINK_SIGNAL_HPP__
+#ifndef WINK_SIGNAL_HPP
+#define WINK_SIGNAL_HPP
 
 #include <vector>
 #include <utility>
@@ -101,4 +101,4 @@ namespace wink
 		slot_array _slots;
 	};
 }
-#endif // __WINK_SIGNAL_H__
+#endif // WINK_SIGNAL_HPP

@@ -9,9 +9,7 @@
 ///
 /// Permission is hereby granted, free of charge, to any person
 /// obtaining a copy of this software and associated documentation files (the "Software"),
-/// to deal in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
+/// to deal in the Software without restriction, including without limitation the rights /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
 ///
 /// 1. The origin of this software must not be misrepresented;
@@ -26,8 +24,8 @@
 ///    all copies or substantial portions of the Software.
 ///
 
-#ifndef __WINK_EVENT_QUEUE_HPP__
-#define __WINK_EVENT_QUEUE_HPP__
+#ifndef WINK_EVENT_QUEUE_HPP
+#define WINK_EVENT_QUEUE_HPP
 
 #include <queue>
 
@@ -229,4 +227,4 @@ namespace wink
 	};
 }
 
-#endif // __WINK_EVENT_QUEUE_H__
+#endif // WINK_EVENT_QUEUE_HPP
