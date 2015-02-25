@@ -61,7 +61,7 @@ wink::slot<void (int)> mySlot;
 
 ### 2. Assigning a slot to functions/member functions
 
-In order to bind to a member function or regular function, overloaded constructor with the appropriate arguments. The apprproate arguments are as follows:
+In order to bind to a member function or regular function, overloaded constructor with the appropriate arguments. The appropriate arguments are as follows:
 
 - (`[function pointer]`)
 - (`[object]`, `[member function pointer]`)
@@ -77,7 +77,7 @@ slot copy = slotMemberFn;
 
 ### 3. Calling the slot
 
-To call the slot, simply use the `operator()`, as you would with a regular function/method. This can take any number of arguments, but it should be the same amount of the slot's arguements, declared in it's type.
+To call the slot, simply use the `operator()`, as you would with a regular function/method. This can take any number of arguments, but it should be the same amount of the slot's arguments, declared in its type.
 
 ```c++
 wink::slot<void (int, int, int)> slot(&foo);
@@ -86,7 +86,7 @@ slot(3, 4, 5); // call the slot
 ```
 
 > #### **NOTE:**
->If binding to an object, when the object is destroyed, it is undefined behaviour. The slot may actually still call the object's method, or it may do something else. I reccomend, if you can, to not call the slot, if the object no longer exists (e.g. out of scope).
+>If binding to an object, when the object is destroyed, it is undefined behaviour. The slot may actually still call the object's method, or it may do something else. I recommend, if you can, to not call the slot, if the object no longer exists (e.g. out of scope).
 
 ## Signals
 
@@ -104,7 +104,7 @@ wink::signal<wink::slot<void (int)> > signal;
 ```
 
 > #### **NOTE:**
->It is reccomended to have a return value that is void, as returning a value with multiple call-backs does not make much sense.
+>It is recommended to have a return value that is void, as returning a value with multiple call-backs does not make much sense.
 
 ### 2. Connecting/Disconnecting slots
 
@@ -136,9 +136,9 @@ sender.connect(&doSomething);
 sender.disconnect(&doSomething);
 ```
 
-#### 3. Emiiting the slots in your signal
+#### 3. Emitting the slots in your signal
 
-To emit events to your connected slots, you simply call the `emit(Args...)` function, or use the `()(Args...)` operator on the signal object, where `Args...` is the paramters of your events.
+To emit events to your connected slots, you simply call the `emit(Args...)` function, or use the `()(Args...)` operator on the signal object, where `Args...` are the parameters of your events.
 
 ###### Example:
 
@@ -146,7 +146,7 @@ To emit events to your connected slots, you simply call the `emit(Args...)` func
 // create a sender
 wink::signal<wink::slot<void (int)>> sender;
 
-// subcsribe to events...
+// subscribe to events...
 // do other things 
 
 // emit the event
