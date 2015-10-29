@@ -53,7 +53,7 @@ namespace wink
 		
 	public:
 		
-		/// The slot used for the signal, for implementatino defailts.
+		/// The slot used for the signal, for implementation defailts.
 		typedef slot<void (const EventData&)> slot_type;
 		
 		/// The signal_type that is used, for implementation details.
