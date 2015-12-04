@@ -27,6 +27,7 @@
 #ifndef WINK_EVENT_QUEUE_HPP
 #define WINK_EVENT_QUEUE_HPP
 
+#include <algorithm>
 #include <queue>
 
 #include <wink/signal.hpp>
