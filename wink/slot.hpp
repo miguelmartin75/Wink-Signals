@@ -29,6 +29,7 @@
 #ifndef WINK_SLOT_HPP
 #define WINK_SLOT_HPP
 
+#include <algorithm>
 #include <utility>
 
 #include <wink/detail/FastDelegate.h>
