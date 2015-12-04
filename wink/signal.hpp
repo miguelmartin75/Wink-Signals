@@ -29,6 +29,7 @@
 #ifndef WINK_SIGNAL_HPP
 #define WINK_SIGNAL_HPP
 
+#include <algorithm>
 #include <vector>
 #include <utility>
 
