@@ -47,6 +47,12 @@ namespace wink
 	public:
 		
 		typedef Slot slot_type;
+
+		/// Disconnects all slots from the signal
+		void clear()
+		{
+			_slots.clear();
+		}
 		
 		/// Connects a slot to the signal
 		/// \param args The arguments you wish to construct the slot with to connect to the signal
@@ -78,14 +84,14 @@ namespace wink
 		/// Emits events you wish to send to call-backs
 		/// \param args The arguments to emit to the slots connected to the signal
 		/// \note
-		/// This is equvialent to emit.
+		/// This is equivalent to emit.
 		template <class ...Args>
 		void operator()(Args&&... args) const
 		{
 			emit(std::forward<Args>(args)...);
 		}
 		
-		// comparision operators for sorting and comparing
+		// comparison operators for sorting and comparing
 		
 		bool operator==(const this_type& signal) const
 		{ return _slots == signal._slots; }
