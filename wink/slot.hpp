@@ -91,9 +91,9 @@ namespace wink
 		/// Calls the slot
 		/// \param args Any arguments you want to pass to the slot
 		template <class ...Args>
-		void operator()(Args&&... args) const
+		auto operator()(Args&&... args) const
 		{
-			_delegate(std::forward<Args>(args)...);
+			return _delegate(std::forward<Args>(args)...);
 		}
 		
 		
