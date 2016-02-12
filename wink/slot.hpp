@@ -97,7 +97,7 @@ namespace wink
 		}
 		
 		
-		// comparision operators for sorting and comparing
+		// comparison operators for sorting and comparing
 		
 		bool operator==(const this_type& slot) const
 		{ return _delegate == slot._delegate; }
