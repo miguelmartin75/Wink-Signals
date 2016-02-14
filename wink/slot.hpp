@@ -91,13 +91,13 @@ namespace wink
 		/// Calls the slot
 		/// \param args Any arguments you want to pass to the slot
 		template <class ...Args>
-		void operator()(Args&&... args) const
+		auto operator()(Args&&... args) const
 		{
-			_delegate(std::forward<Args>(args)...);
+			return _delegate(std::forward<Args>(args)...);
 		}
 		
 		
-		// comparision operators for sorting and comparing
+		// comparison operators for sorting and comparing
 		
 		bool operator==(const this_type& slot) const
 		{ return _delegate == slot._delegate; }
