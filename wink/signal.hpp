@@ -67,7 +67,12 @@ namespace wink
 		template <typename... Args>
 		void disconnect(Args&&... args)
 		{
-			_slots.erase(std::find(_slots.begin(), _slots.end(), slot_type(std::forward<Args>(args)...)));
+			auto it = std::find(_slots.begin(), _slots.end(), slot_type(std::forward<Args>(args)...));
+
+			if (it != _slots.end())
+			{
+				_slots.erase(it);
+			}
 		}
 		
 		/// Emits the events you wish to send to the call-backs
