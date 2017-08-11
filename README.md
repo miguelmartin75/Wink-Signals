@@ -61,7 +61,7 @@ wink::slot<void (int)> mySlot;
 
 ### 2. Assigning a slot to functions/member functions
 
-In order to bind to a member function or regular function, overloaded constructor with the appropriate arguments. The appropriate arguments are as follows:
+In order to bind to a member function or regular function, overload the constructor with the appropriate arguments. The appropriate arguments are as follows:
 
 - (`[function pointer]`)
 - (`[object]`, `[member function pointer]`)
@@ -71,8 +71,8 @@ In order to bind to a member function or regular function, overloaded constructo
 ```c++
 Foo bar;
 wink::slot<void (int)> slotMemberFn(&bar, &Foo::foobar);
-slot slotGlobalFn(&foo);
-slot copy = slotMemberFn;
+wink::slot slotGlobalFn(&foo);
+wink::slot copy = slotMemberFn;
 ```
 
 ### 3. Calling the slot
