@@ -202,13 +202,8 @@ Connecting and disconnecting slots for an `event_queue` is the same as `wink::si
 
 ##### NOTE:
 
->event_queue actually uses an EventSender object to send out events. The only difference is, an `event_queue<T>` uses the following function prototype:
-
-```c++
-void foo(const T&);
-```
-
->The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
+>event_queue actually uses an EventSender object to send out events. The only difference is, an `event_queue<T>` uses the function prototype
+`void foo(const T&)` The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
 
 
 #### 4. Pushing Data to the Event Queue
