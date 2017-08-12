@@ -61,7 +61,7 @@ wink::slot<void (int)> mySlot;
 
 ### 2. Assigning a slot to functions/member functions
 
-In order to bind to a member function or regular function, overloaded constructor with the appropriate arguments. The appropriate arguments are as follows:
+In order to bind to a member function or regular function, overload the constructor with the appropriate arguments. The appropriate arguments are as follows:
 
 - (`[function pointer]`)
 - (`[object]`, `[member function pointer]`)
@@ -71,8 +71,8 @@ In order to bind to a member function or regular function, overloaded constructo
 ```c++
 Foo bar;
 wink::slot<void (int)> slotMemberFn(&bar, &Foo::foobar);
-slot slotGlobalFn(&foo);
-slot copy = slotMemberFn;
+wink::slot slotGlobalFn(&foo);
+wink::slot copy = slotMemberFn;
 ```
 
 ### 3. Calling the slot
@@ -202,12 +202,8 @@ Connecting and disconnecting slots for an `event_queue` is the same as `wink::si
 
 ##### NOTE:
 
->event_queue actually uses an EventSender object to send out events. The only difference is, an `event_queue<T>` uses the following function prototype:
-
->```c++
-void foo(const T&);
-```
-The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
+>event_queue actually uses an EventSender object to send out events. The only difference is, an `event_queue<T>` uses the function prototype
+`void foo(const T&)` The name of your method may be anything, as with a signal, but all functions MUST return void. Unlike signals, where it is optional (but doesn't really make sense).
 
 
 #### 4. Pushing Data to the Event Queue
