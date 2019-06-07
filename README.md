@@ -11,10 +11,24 @@ Miguel Martin - [miguel@miguel-martin.com](mailto:miguel@miguel-martin.com)
 # Tested Compilers
 
 - clang 3.1/Apple Clang Version 4.1 (LLVM 3.1svn)
+- Apple LLVM Clang Version 10.0.0 (clang-1000-11.45.5)
+- gcc 8.3.0 (Debian 8.3.0-6)
 
 # Installation
 
-This library is a header-only library (mainly because of templates), therefore there is no installation. Just place it in your project, or somewhere your compiler can find it and you're all set!
+This library is a header-only library (mainly because of templates), therefore installation is not nesessary. Just place it in your project, or somewhere your compiler can find it and you're all set!
+
+Optionaly use CMake to build/install:
+```sh
+cd Wink-Signals
+mkdir build                               # prepare build directory
+cmake -B./build <OPTIONS>                 # configure
+cmake --build ./build --target install    # build and install
+```
+Where possible OPTIONS are:
+- `-G<Xcode|Ninja|"Visual Studio 15 2017"|...>` -- generate project for IDE / build system (see `cmake --help`)
+- `-DCMAKE_INSTALL_PREFIX=/where/to/install/` -- use custom install prefix
+- `-Dwink_BUILD_EXAMPLES=OFF` -- skip building examples
 
 # Performance
 

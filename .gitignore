@@ -1,0 +1,7 @@
+# IDE/editor
+.projectile
+*.kdev4
+
+# In-project Cmake build dirs
+/build*
+
