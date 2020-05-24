@@ -91,7 +91,7 @@ namespace wink
 		}
 
 		/// Disconnects a lambda slot to the signal.
-		///\param lambda. anytype which overloads operator()
+		///\param handle.  
 
 		void disconnect(std::shared_ptr<void> handle)
 		{
