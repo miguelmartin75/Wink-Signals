@@ -134,6 +134,11 @@ sender.connect(&doSomething);
 
 // disconnect
 sender.disconnect(&doSomething);
+
+int x = 0;
+
+sender.connect_lambda([&]() { std::cout << x << std::endl; });
+
 ```
 
 #### 3. Emitting the slots in your signal

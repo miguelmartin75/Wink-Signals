@@ -32,6 +32,8 @@
 #include <algorithm>
 #include <vector>
 #include <utility>
+#include <memory>
+#include <functional>
 
 #include <wink/slot.hpp>
 
@@ -74,7 +76,38 @@ namespace wink
 				_slots.erase(it);
 			}
 		}
-		
+
+		/// Connects a captured lambda to the signal.
+		///\param lambda. anytype which overloads operator()
+		template <typename LambaType>
+		auto connect_lambda(LambaType lambda)
+		{
+			auto  lambda_ptr = new LambaType(lambda);
+
+			connect(lambda_ptr);
+
+			_lifetime_extenders.push_back(std::shared_ptr<void>(lambda_ptr));
+			return _lifetime_extenders.back();
+		}
+
+		/// Disconnects a lambda slot to the signal.
+		///\param lambda. anytype which overloads operator()
+
+		void disconnect(std::shared_ptr<void> handle)
+		{
+			typedef std::function<typename Slot::FnPtr> Erased_type;
+
+			disconnect(slot_type((Erased_type*)handle.get(),&Erased_type::operator()));
+
+			// release reference.
+			auto it = std::find(_lifetime_extenders.begin(), _lifetime_extenders.end(), handle);
+			if (it != _lifetime_extenders.end())
+			{
+				_lifetime_extenders.erase(it);
+			}
+		}
+
+
 		/// Emits the events you wish to send to the call-backs
 		/// \param args The arguments to emit to the slots connected to the signal
 		template <class ...Args>
@@ -111,6 +144,9 @@ namespace wink
 		
 		/// The slots connected to the signal
 		slot_array _slots;
+
+		/// references to objects created using connect_lambda
+		std::vector<std::shared_ptr<void>>  _lifetime_extenders;
 	};
 }
 #endif // WINK_SIGNAL_HPP

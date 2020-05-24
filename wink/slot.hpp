@@ -70,7 +70,14 @@ namespace wink
 		slot(T* obj, MemFnPtr fn)
 			: _delegate(obj, fn)
 		{}
-		
+
+		/// Construct a slot with a overloaded operator() member function
+		/// \param obj The object that the overloaded operator() belongs to
+		template <typename T>
+		slot(T* obj)
+			: _delegate(obj, &T::operator())
+		{}
+
 		/// Copy constructor
 		slot(const this_type& slot)
 			: _delegate(slot._delegate)

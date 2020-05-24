@@ -65,8 +65,12 @@ struct EventHandler
 		// simple computation
 		int z = std::sqrt(y) * y + x;
 	}
-	
-	
+
+	void operator()(int x)
+	{
+		handleEvent(x);
+	}
+
 	/// Different function for a queue, since it uses a different prototype,
 	/// but it does contain the same implemenation
 	void queueHandleEvent(const int& x)
@@ -184,9 +188,45 @@ int main(int argc, char* argv[])
 		printTimeTaken(start, end);
 #endif // DO_PROPER_BENCHMARK
 	}
-	
-	
-	
+
+	{
+		typedef wink::signal<wink::slot<void(int)> > signal;
+		signal sender;
+		EventHandler handler;
+
+		std::shared_ptr<void> handle;
+		{
+				sender.connect_lambda([&](int x)
+				{
+					handler.handleEvent(x);
+				});
+		}
+
+		std::cout << "Using signal<slot<void(int)>> with captured lambda slot to handle events:\n";
+
+		#ifdef DO_PROPER_BENCHMARK
+		start = GetTimeNow();
+		#endif // DO_PROPER_BENCHMARK
+
+		for (int i = 0; i < AMOUNT_OF_TIMES_TO_SEND_EVENT; ++i)
+		{
+			for (std::vector<int>::iterator i = numbersToSend.begin(); i != numbersToSend.end(); ++i)
+			{
+				// emit the event
+				sender(*i);
+			}
+		}
+
+#ifdef DO_PROPER_BENCHMARK
+		end = GetTimeNow();
+
+		// print the time taken
+		printTimeTaken(start, end);
+#endif // DO_PROPER_BENCHMARK
+	}
+
+
+
 	{
 		EventHandler handler;
 		typedef wink::event_queue<int> event_queue;
